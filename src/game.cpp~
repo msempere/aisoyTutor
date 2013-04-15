@@ -1,0 +1,12 @@
+#include "game.h"
+
+Game::Game()
+{
+  
+  //Thread *p1 = Thread::Instance();
+}
+
+Game::~Game()
+{
+
+}

@@ -1,0 +1,145 @@
+#include "ledsgame.h"
+
+LedsGame::LedsGame():Game()
+{
+  SetName("Juego de contar leds");
+  bot.say("Vamos a jugar al "+this->GetName());
+}
+
+LedsGame::~LedsGame()
+{
+
+}
+
+void LedsGame::GenerateMouth()
+{
+  int min=0;
+  int max=1;
+  bool existe=false;
+  
+  int totalLeds=GetRandom(min,max);
+  Led led;
+  
+  for(int i=0;i<totalLeds;i++){
+    
+    led.SetRandom();
+    
+    for(int j=0;j<mouth.size();j++){
+      if(mouth.at(j)==led)
+	existe=true;
+    }
+    
+    
+    if(!existe)
+      mouth.push_back(led);
+    else
+      totalLeds+=1;
+  }
+  
+}
+
+void LedsGame::DrawMouth()
+{
+  /*
+  char m[KmaxMouth];
+  
+  for(int j=0;j<KmaxMouth;j++)
+    m[j]=' ';
+  
+  for(int i=0;i<mouth.size();i++){
+    m[mouth.at(i).GetLed()]='1';
+  }
+  
+  bot.mouthDraw(m);
+  */
+}
+
+int LedsGame::EscucharRespuesta()
+{
+  bot.setGrammarFile("./numbers.bnf");
+  AISoy1::Sentence sentence;
+  
+  sentence=bot.listen();
+  
+  char *tmp=strdupa(sentence.sentence().c_str());
+  DeleteChar(tmp,'D');
+  
+  return Chartoint(tmp);
+}
+
+int LedsGame::GetLedsON()
+{
+  return mouth.size();
+}
+
+
+void LedsGame::Run()
+{
+  /*
+  IniFile ifile;
+  Timer t;
+  int puntos=0;
+  int respuesta;
+  int tiempoRestante=ifile.GetIntKeyValueFromActualLevel("tiempoMaximoLeds");
+  
+  while(tiempoRestante>0){
+    
+    GenerateMouth();
+    DrawMouth();
+    
+    t.Start();
+    respuesta=EscucharRespuesta();
+    t.Stop();
+    
+    if(respuesta==GetLedsON()){
+      //correcto
+      puntos++;
+      PutGreen();
+    }
+    else{
+      //incorrecto
+      PutRed();
+    }
+    
+    
+  }
+  */
+  PutBlack();
+  
+  int numLeds=-1;
+  int numRondas=3;
+  Mouth m;
+  
+  for(int i=0;i<numRondas;i++){
+    
+    bot.say("Ronda "+IntToString(i+1));
+    
+    PutBlack();
+    numLeds=GetRandom(1,21);
+    
+    cout<<"Mostramos "<<numLeds<<endl;
+    
+    m.TurnOnRandomLeds(0,0,9,6,numLeds);
+    bot.mouthDraw(m.Get());
+    
+    if(EscucharRespuesta()==numLeds){
+      bot.say("Bien");
+      YesWithHead();
+      PutGreen();
+      sleep(1);
+    }
+      
+    else{
+      bot.say("Mal");
+      NoWithHead();
+      PutRed();
+      sleep(1);
+    }
+    
+    m.Clear();
+    bot.mouthDraw(m.Get());
+  }
+  
+}
+
+

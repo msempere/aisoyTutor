@@ -1,0 +1,24 @@
+#include "simongame.h"
+
+SimonGame::SimonGame()
+{
+
+}
+
+
+SimonGame::~SimonGame()
+{
+
+}
+
+
+void SimonGame::Run()
+{
+
+}
+
+bool SimonGame::EscucharRespuestas(Sequence secuencia_generada)
+{
+
+}
+

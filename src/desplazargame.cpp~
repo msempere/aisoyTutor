@@ -1,0 +1,101 @@
+#include "desplazargame.h"
+
+DesplazarGame::DesplazarGame()
+{
+  SetName("Juego de operaciones desplazando figuras");
+  bot.say("Vamos a operar con figuras.");
+}
+
+DesplazarGame::~DesplazarGame()
+{
+
+}
+
+int DesplazarGame::EscucharRespuesta()
+{
+    bot.setGrammarFile("./numbers.bnf");
+    AISoy1::Sentence sentence=bot.listen();
+
+    char *tmp=strdupa(sentence.sentence().c_str());
+    DeleteChar(tmp,'D');
+
+    return Chartoint(tmp);
+}
+
+
+void DesplazarGame::Run()
+{
+  //PerformanceManager::Run();
+
+  int operacion=-1;
+  int operando1=-1;
+  int operando2=-1;
+  int resultadoOperacion=-1;
+  int resultadoUsuario=-1;
+  int aciertos=0;
+  Mouth m;
+  
+  //numero de repeticiones del juego
+  for(int i=0;i<2;i++){
+    
+    operacion=GetRandom(0,2);
+    operando1=GetRandom(1,5);
+    operando2=GetRandom(1,5);
+    
+    cout<<"Operacion "<<operacion<<endl;
+    
+    //operacion suma
+    if (operacion==0) {
+        for (int i=0;i<operando1;i++) {
+            m.Square(3,2,4);
+            m.MoveLeft();
+        }
+
+        for (int i=0;i<operando2;i++) {
+            m.Circle(3,2,4);
+            m.MoveLeft();
+        }
+        
+        resultadoOperacion=operando1+operando2;
+    }
+    else {
+        //operacion resta
+        if (operacion==1) {
+            for (int i=0;i<operando1;i++) {
+                m.Square(3,2,4);
+                m.MoveLeft();
+            }
+
+            for (int i=0;i<operando2;i++) {
+                m.Circle(3,2,4);
+                m.MoveRight();
+            }
+        }
+        
+        if(operando1>=operando2)
+	  resultadoOperacion=operando1-operando2;
+	else
+	  resultadoOperacion=operando2-operando1;
+	
+	
+    }
+    
+    cout<<"Resultado: "<<resultadoOperacion<<endl;
+    resultadoUsuario=EscucharRespuesta();
+    cout<<"Escuchamos: "<<resultadoUsuario<<endl;
+    
+    if(resultadoOperacion==resultadoUsuario){
+      aciertos++;
+      bot.say("bien");
+    }
+    else
+      bot.say("mal");
+  }
+  
+  string botSay="Conseguiiste "+IntToString(aciertos)+" aciertos";
+  bot.say(botSay);
+
+}
+
+
+

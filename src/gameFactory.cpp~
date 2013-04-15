@@ -1,0 +1,37 @@
+#include "gameFactory.h"
+
+Game* GameFactory::GetGame(string g)
+{
+  
+  cout<<"Se ha elegido: "<<g<<endl;
+  
+  if(g.compare("color")==0)
+    return new ColorGame;
+  
+  else if(g.compare("desplazar")==0)
+    return new DesplazarGame;
+  
+  else if(g.compare("barra")==0)
+    return new OpsBarraGame;
+  
+  else if(g.compare("simoncolorgame")==0)
+    return new SimonColorGame;
+  
+  else if(g.compare("simonshapegame")==0)
+    return new SimonShapeGame;
+  
+  else if(g.compare("simonnumbergame")==0)
+    return new SimonNumberGame;
+  
+  else if(g.compare("colorandleds")==0)
+    return new ColorAndLedsGame;
+  
+  else if(g.compare("mathsgame")==0)
+    return new MathsGame;
+  
+  else if(g.compare("ledsgame")==0)
+    return new LedsGame;
+  
+  else if(g.compare("realsimon")==0)
+    return new RealSimonGame();
+}

@@ -1,0 +1,33 @@
+#include "errorColor.h"
+
+ErrorColor::ErrorColor()
+{
+  SetErroneo(true);
+  int v=GetRandom(0,5);
+  
+  SetValor(GetRandom(0,5,v));
+  
+    switch(v){
+      case 0:
+	SetNombre("rojo");
+	break;
+      case 1:
+	SetNombre("verde");
+	break;
+      case 2:
+	SetNombre("azul");
+	break;
+      case 3:
+	SetNombre("blanco");
+	break;
+      case 4:
+	SetNombre("amarillo");
+	break;
+      case 5:
+	SetNombre("rosa");
+	break;
+      default:
+	cout<<"Error. Error al generar ErrorColor"<<endl;
+    }
+    
+}

@@ -1,0 +1,45 @@
+#include "thread.h"
+
+Thread* Thread::pinstance = 0;
+
+Thread* Thread::Instance ()
+{
+  if (pinstance == 0)
+    pinstance = new Thread;
+  return pinstance;
+}
+
+Thread::Thread()
+{
+  hearth_green=hearth_red=thread_created=false;
+  
+}
+
+static void StartThread() {
+	
+  cout<<"############### Se ha activado el Thread! ############### "<< boost::this_thread::get_id()<<endl;
+
+	while(1){
+	  
+	  sleep(1);
+	  //cout<<"############### Sigo activo ############### "<< boost::this_thread::get_id()<<endl;
+	}
+}
+
+void Thread::PutRed(){
+  hearth_red=true;
+}
+
+void Thread::PutGreen(){
+  hearth_green=true;
+}
+
+void Thread::Run(boost::function<void(bool *)> &_f)
+{
+  if(!thread_created){
+      m_thread = boost::thread(boost::bind(_f)); 
+      thread_created=true;
+  }
+}
+
+

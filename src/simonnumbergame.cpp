@@ -1,0 +1,94 @@
+#include "simonnumbergame.h"
+
+
+SimonNumberGame::SimonNumberGame()
+{
+  SetName("Juego simon con nuumeros");
+  bot.say("Vamos a jugar al "+this->GetName());
+}
+
+
+SimonNumberGame::~SimonNumberGame()
+{
+
+}
+
+
+bool SimonNumberGame::EscucharRespuestas(vector<int> secuencia_generada)
+{
+    bot.setGrammarFile("./numbers.bnf");
+    AISoy1::Sentence sentence;
+    int r=-1;
+
+    for (int j=0;j<secuencia_generada.size();j++) {
+	sentence=bot.listen();
+        char *tmp=strdupa(sentence.sentence().c_str());
+        DeleteChar(tmp,'D');
+
+        r=Chartoint(tmp);
+
+        cout<<"Escuchamos "<<r<<" y Esperamos "<<secuencia_generada.at(j)<<endl;
+
+        if (r==secuencia_generada.at(j)){
+            bot.say("si");
+	    YesWithHead();
+	}
+        else {
+            bot.say("no");
+	    NoWithHead();
+            return false;
+        }
+
+    }
+    return true;
+}
+
+
+void SimonNumberGame::Run()
+{
+    bool fail=false;
+    int rondas=1;
+    int shape_size=5;
+    Mouth m;
+    vector<int> secuencia_generada;
+
+    PutBlack();
+
+    while (!fail) {
+
+        bot.say("Ronda "+IntToString(rondas));
+
+        //dibujamos y almacenamos las figuras mostradas
+        for (int i=0;i<rondas;i++) {
+            secuencia_generada.push_back(m.DrawRandomNumber());
+            //bot.mouthDraw(m.Get());
+            sleep(2);
+	    m.Fill();
+	    bot.mouthDraw(m.Get());
+	    sleep(1);
+            m.Clear();
+            bot.mouthDraw(m.Get());
+        }
+
+	//mostramos por consola secuencia
+	cout<<"[ ";
+        for (int j=0;j<secuencia_generada.size();j++)
+            cout<<secuencia_generada.at(j)<<" ";
+        cout<<" ]"<<endl;
+
+	//escuchamos y actuamos en funcion de si son o no correctas las respuestas
+        if (EscucharRespuestas(secuencia_generada)) {
+            bot.say("Bien");
+            rondas++;
+        }
+        else {
+            bot.say("Mal");
+            fail=true;
+        }
+
+        //reseteamo vectore
+        secuencia_generada.clear();
+    }
+    
+    bot.say("Has conseguido hacer "+IntToString(rondas-1)+" rondas");
+}

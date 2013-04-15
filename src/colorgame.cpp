@@ -1,0 +1,136 @@
+#include "colorgame.h"
+
+ColorGame::ColorGame():Game()
+{
+  SetName("Juego de los Colores");
+}
+
+ColorGame::~ColorGame()
+{
+
+}
+
+void ColorGame::GenerarPregunta()
+{
+  IniFile ifile;
+  int gradoMinimo=0;//ifile.GetIntKeyValueFromActualLevel("gradoMinimoJuegoColores");
+  int gradoMaximo=4;//ifile.GetIntKeyValueFromActualLevel("gradoMaximoJuegoColores");
+  int grado=GetRandom(gradoMinimo,gradoMaximo);
+  int totalColores=0;
+  int totalErrores=0;
+  
+  switch(grado){
+    case(0):
+	totalColores=2;
+	totalErrores=1;
+      break;
+    case(1):
+	totalColores=3;
+	totalErrores=1;
+      break;
+    case(2):
+	totalColores=4;
+	totalErrores=1;
+      break;
+    case(3):
+	totalColores=5;
+	totalErrores=1;
+      break;    
+    default:
+      totalColores=5;
+      totalErrores=1;
+  }
+  
+  pregunta.GenerateRandomSequence(totalColores,totalErrores);
+  
+}
+
+void ColorGame::EscucharRespuesta()
+{
+  bot.setGrammar("rojo|verde|amarillo|rosa|blanco|azul");
+  AISoy1::Sentence sentence;
+  
+  for(int i=0;i<pregunta.GetNumErroneos();i++){
+    sentence=bot.listen();
+    Color *c=new Color(sentence.sentence());
+    c->SetErroneo();
+    respuesta.Add(c);
+  }
+
+}
+
+
+void ColorGame::Red(bool *running){
+  while(*running){
+    PutRed();
+    sleep(1);
+    PutGreen();
+  }
+}
+
+void ColorGame::Blue(bool *running){
+  while(*running){
+    PutBlue();
+    sleep(1);
+    PutYellow();
+  }
+}
+
+
+void ColorGame::Run()
+{
+    /*
+    PerformanceManager::SetPerformance(boost::bind(&ColorGame::Red, this, _1));
+    PerformanceManager::Run();
+    sleep(5);
+    PerformanceManager::SetPerformance(boost::bind(&ColorGame::Blue, this, _1));
+    sleep(5);
+    */
+
+    //IniFile ifile;
+    //Timer t;
+    int puntos=0;
+    //int tiempoRestante=ifile.GetIntKeyValueFromActualLevel("tiempoMaximoColores");
+
+
+    //while(tiempoRestante>0){
+
+   Sequence pregunta;
+   Sequence respuesta;
+   PutBlack();
+      
+    for (int i=0;i<3;i++) {
+
+        GenerarPregunta();
+	pregunta.Reproduce();
+	
+	cout<<"Size pregunta: "<<pregunta.Size()<<endl;
+	pregunta.Print();
+	
+        //t.Start();
+        EscucharRespuesta();
+        //t.Stop();
+        //tiempoRestante=t.Restante(tiempoRestante);
+        //puntos+=pregunta.GetNumErrorColorsEqual(respuesta);
+
+        if (pregunta.CompareErrors(respuesta)) {
+            //acierto
+            YesWithHead();
+            puntos++;
+        }
+        else {
+            //fallo
+            NoWithHead();
+        }
+        
+        
+	pregunta.Clear();
+	respuesta.Clear();
+	PutBlack();
+    }
+    //}
+
+    cout<<"Puntos conseguidos: "<<puntos;
+
+}
+

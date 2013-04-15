@@ -1,0 +1,42 @@
+#ifndef THREAD_H_
+#define THREAD_H_
+
+
+#include <boost/thread.hpp>
+#include <boost/function.hpp>
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <aisoy1/bot.h>
+#include <aisoy1/log.h>
+
+
+
+
+using namespace std;
+
+class Thread{
+  
+  public:
+      static Thread* Instance();
+      void Run(boost::function<void(bool *)> &_f);
+      void PutRed();
+      void PutGreen();
+      
+   protected:
+      Thread();
+      Thread(const Thread & ) ;
+      Thread &operator= (const Thread & ) ;      
+      
+   private:
+     static Thread* pinstance;
+     boost::thread m_thread;
+     bool thread_created;
+     bool hearth_red;
+     bool hearth_green;
+     boost::function<void()> f;
+};
+#endif

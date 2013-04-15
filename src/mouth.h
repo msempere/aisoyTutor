@@ -1,0 +1,66 @@
+#ifndef MOUTH_H_
+#define MOUTH_H_
+
+#include "utils.h"
+#include "performanceManager.h"
+#include <boost/thread.hpp>
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
+#include <vector>
+#include <aisoy1/bot.h>
+#include <aisoy1/log.h>
+#include <stdlib.h>
+
+using namespace std;
+
+const int KmaxMouth=70;
+const int KmaxX=10;
+const int KmaxY=7;
+
+class Mouth{
+  friend 
+    ostream& operator<<(ostream&,Mouth&);
+  private:
+    char mouth[KmaxX*KmaxY];
+    void Wait(int milliseconds);
+  public:
+    Mouth();
+    ~Mouth();
+    const char* Get();
+    void Clear();
+    void Fill();
+    void Draw();
+    int GetLed(int x,int y);
+    int GetLed(int xx);
+    inline void TurnOnLed(int x,int y){mouth[x+(y*KmaxX)]='*';};
+    inline void TurnOffLed(int x,int y){mouth[x+(y*KmaxX)]=' ';};
+    inline void TurnOnLed(int x){mouth[x]='*';};
+    inline void TurnOffLed(int x){mouth[x]=' ';};
+    void TurnOnRandomLeds(int point_1_x,int point_1_y,int point_2_x,int point_2_y, int numLeds);
+    void MoveOneLeft();
+    void MoveOneRight();
+    void MoveOneUp();
+    void MoveOneDown();
+    void MoveLeft(bool* running);
+    void MoveRight(bool* running);
+    void MoveLeft();
+    void MoveRight();
+    void MoveUp();
+    void MoveDown();
+    void Square(int x,int y,int t);
+    void Rectangle(int x,int y, int xsize, int ysize);
+    void Circle(int x,int y, int t);
+    void Mas(int x,int y,int t);
+    void Menos(int x,int y, int t);
+    string DrawRandomShape(int t);
+    int DrawRandomNumber();
+    void CreateBar();
+    Mouth &operator= (Mouth &m);
+    Mouth &operator+(Mouth &m); 
+
+};
+
+#endif

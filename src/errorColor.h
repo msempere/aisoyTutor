@@ -1,0 +1,26 @@
+#ifndef ERRORCOLOR_H_
+#define ERRORCOLOR_H_
+
+#include "color.h"
+
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+
+
+
+using namespace std;
+
+class ErrorColor : public Color{
+  
+  private:
+  public:
+    ErrorColor();
+    
+};
+
+#endif

@@ -1,0 +1,126 @@
+#include "color.h"
+
+
+
+Color::Color(){
+  
+    valor=-1;
+    nombre="vacio";
+    erroneo=false;
+}
+
+
+Color::~Color(){
+}
+
+Color::Color(string n){
+  if(n.compare("rojo")==0){
+    SetValor(0);
+  }
+  else if(n.compare("verde")==0){
+    SetValor(1);
+  }
+  else if(n.compare("azul")==0){
+    SetValor(2);
+  }
+  else if(n.compare("blanco")==0){
+    SetValor(3);
+  }
+  else if(n.compare("amarillo")==0){
+    SetValor(4);
+  }
+  else if(n.compare("rosa")==0){
+    SetValor(5);
+  }
+}
+
+void Color::SetValor(int v)
+{
+  switch(v){
+      case 0:
+	valor=v;
+	SetNombre("rojo");
+	break;
+      case 1:
+	valor=v;
+	SetNombre("verde");
+	break;
+      case 2:
+	valor=v;
+	SetNombre("azul");
+	break;
+      case 3:
+	valor=v;
+	SetNombre("blanco");
+	break;
+      case 4:
+	valor=v;
+	SetNombre("amarillo");
+	break;
+      case 5:
+	valor=v;
+	SetNombre("rosa");
+	break;
+      default:
+	cout<<"Error. Error al generar Color"<<endl;
+    }
+}
+
+
+Color& Color::operator=(Color& c) 
+{
+  this->SetNombre(c.GetNombre());
+  this->SetValor(c.GetValor());
+  return *this;
+}
+
+
+Color::Color(int v)
+{
+    SetValor(v);
+}
+
+void Color::SetRandom(){
+  SetValor(GetRandom(0,6));
+}
+
+
+void Color::Draw(){
+    switch(this->GetValor()){
+      case 0:
+	PutRed();
+	break;
+      case 1:
+	PutGreen();
+	break;
+      case 2:
+	PutBlue();
+	break;
+      case 3:
+	PutWhite();
+	break;
+      case 4:
+	PutYellow();
+	break;
+      case 5:
+	PutPink();
+	break;
+    }
+}
+
+void Color::Say(){
+  bot.say(this->GetNombre());
+}
+
+bool Color::Erroneo()
+{
+  return erroneo;
+}
+
+bool Color::operator==(Color& c)
+{
+  if(this->GetNombre()==c.GetNombre() && this->GetValor()== c.GetValor())
+    return true;
+  return false;
+}
+

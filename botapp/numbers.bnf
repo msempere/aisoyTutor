@@ -1,0 +1,4 @@
+#ABNF 1.0 ISO8859-1;
+
+
+root $enteros = [ menos {-} ] $(builtin:grammar/number:es?min=0;max=70);
